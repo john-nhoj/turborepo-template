@@ -1,6 +1,7 @@
 {
   "name": "@ui-kit/shadcn",
   "version": "0.0.0",
+  "license": "MIT",
   "exports": {
     ".": "./src/index.tsx",
     "./components/card": "./src/components/ui/card.tsx",
