@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@ui-kit/shadcn/components/button";
@@ -15,42 +15,49 @@ import {
 } from "@ui-kit/shadcn/components/form";
 import { Input } from "@ui-kit/shadcn/components/input";
 import { Card, CardContent, CardHeader } from "@ui-kit/shadcn/components/card";
+import { toast } from "sonner";
 
 type Props = {
   searchParams: {
-    redirectUrl?: string;
-  };
-};
+    redirectUrl?: string,
+  }
+}
 
 const formSchema = z.object({
   email: z.string().email(),
-});
+})
 
 export default function Page({ searchParams }: Props): JSX.Element {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-    },
+    }
   });
   const signIn = async (formdata: z.infer<typeof formSchema>) => {
-    const { email } = formdata;
-    const supabase = createClient();
+    const { email } = formdata
+    const supabase = createClient()
     const { error } = await supabase.auth.signInWithOtp({
       email: String(email),
       options: {
         emailRedirectTo: `${origin}/auth/callback?redirectTo=${searchParams.redirectUrl}`,
-      },
-    });
-    if (error) throw error;
-  };
+      }
+    })
+    if (error) {
+      toast.error(error.message)
+      return
+    }
+    toast.success("Check your email for the login link!")
+  }
 
   return (
     <main className="min-h-screen grid items-center justify-center">
       <Card>
         <CardHeader>Login</CardHeader>
         <CardContent>
-          <Form {...form}>
+          <Form
+            {...form}
+          >
             <form
               className="flex flex-col gap-6 p-4"
               onSubmit={form.handleSubmit(signIn)}
@@ -68,7 +75,9 @@ export default function Page({ searchParams }: Props): JSX.Element {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Sign In</Button>
+              <Button type="submit">
+                Sign In
+              </Button>
             </form>
           </Form>
         </CardContent>

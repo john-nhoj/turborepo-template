@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ThemeToggle";
 import { cn } from "@ui-kit/shadcn/utils";
+import { Toaster } from '@ui-kit/shadcn/components/sonner';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ModeToggle />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
